@@ -278,8 +278,6 @@ export default function RevenueLossAnalyzer({ logs }: RevenueLossAnalyzerProps) 
               环比: <span className="font-semibold text-orange-600">+3.2%</span>
             </div>
           </div>
-
-          </div>
         </div>
       </div>
 
