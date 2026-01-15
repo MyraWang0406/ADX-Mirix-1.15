@@ -24,9 +24,23 @@ export default function SmartStrategyCenter() {
   const fetchDiagnostic = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/diagnose')
-      const data = await response.json()
-      setDiagnostic(data)
+      const mockData = {
+        status: 'success',
+        timestamp: new Date().toISOString(),
+        ai_suggestions: {
+          summary: 'ADX 上流流量上涨 23.5%，平均出价下降 2.1%，整体胜率下滑 1.8%',
+          root_cause: '已识别到 3 个次要流量波动：已识别到 3 个次要流量波动：已识别到 3 个次要流量波动',
+          economic_impact: '月度潜在损失 $12,500，其中延迟超时占 68%，素材不合规占 18%',
+          suggestions: [
+            '优先上线延迟优化策略，预计可挂回 $8,500',
+            '对已拒绝的素材进行 A/B 测试，优化活动性',
+            '在已识别的高价值时段流量上流 15% 出价'
+          ],
+          priority: 'HIGH'
+        },
+        estimated_hourly_loss: 520.5
+      }
+      setDiagnostic(mockData)
     } catch (err) {
       console.error('Error fetching diagnostic:', err)
     } finally {

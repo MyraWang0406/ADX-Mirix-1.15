@@ -31,9 +31,30 @@ export default function Home() {
   const fetchLogs = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/logs')
-      const data = await response.json()
-      setLogs(data.logs || [])
+      // 使用模拟数据（静态导出模式下无法使用API）
+      const mockLogs = [
+        {
+          request_id: 'req_001',
+          timestamp: new Date().toISOString(),
+          node: 'SSP',
+          action: 'REQUEST_GENERATED',
+          decision: 'PASS',
+          reason_code: 'REQUEST_CREATED',
+          internal_variables: {},
+          reasoning: 'SSP 生成广告请求'
+        },
+        {
+          request_id: 'req_001',
+          timestamp: new Date().toISOString(),
+          node: 'DSP',
+          action: 'BID_SUBMITTED',
+          decision: 'PASS',
+          reason_code: 'BID_SUBMITTED',
+          internal_variables: { final_bid: 0.5 },
+          reasoning: 'DSP 提交出价'
+        }
+      ]
+      setLogs(mockLogs)
       setLastUpdate(new Date())
       
       // 计算漏斗数据
@@ -42,7 +63,7 @@ export default function Home() {
       const bidIds = new Set<string>()
       const winIds = new Set<string>()
 
-      data.logs.forEach((log: WhiteboxTrace) => {
+      mockLogs.forEach((log: WhiteboxTrace) => {
         requestIds.add(log.request_id)
 
         if (log.node === 'SSP' && log.action === 'REQUEST_GENERATED') {

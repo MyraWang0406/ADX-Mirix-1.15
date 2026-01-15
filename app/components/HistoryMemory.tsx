@@ -20,41 +20,45 @@ export default function HistoryMemory({ logs }: HistoryMemoryProps) {
   const [historicalMatch, setHistoricalMatch] = useState<{
     summary: string
     matches: HistoricalPattern[]
-  } | null>(null)
+  } | null>({
+    summary: '【历史复现】该模式与今天 14:00 的波动高度相似（相似度 85.3%），当时出现 12 次，建议沿用当时的降噪策略。',
+    matches: [
+      {
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        pattern_type: '14h_brazil_LATENCY_TIMEOUT',
+        frequency: 12,
+        avg_loss: 0.15,
+        similarity_score: 0.853
+      }
+    ]
+  })
   const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const analyzeHistory = async () => {
-      if (logs.length === 0) return
-
       setIsLoading(true)
       try {
-        // 提取当前模式特征
+        // 总是昺示模拟数据（静态导出模式）
         const currentHour = new Date().getHours()
-        const rejectLogs = logs.filter(l => l.decision === 'REJECT')
-        
-        if (rejectLogs.length === 0) {
-          setIsLoading(false)
-          return
+        const currentPattern = `${currentHour}h_LATENCY_TIMEOUT`
+
+        const mockData = {
+          summary: '【历史复现】该模式与今天 14:00 的波动高度相似（相似度 85.3%），当时出现 12 次，建议沿用当时的降噪策略。',
+          matches: [
+            {
+              timestamp: new Date(Date.now() - 3600000).toISOString(),
+              pattern_type: '14h_brazil_LATENCY_TIMEOUT',
+              frequency: 12,
+              avg_loss: 0.15,
+              similarity_score: 0.853
+            }
+          ]
         }
-
-        const currentPattern = `${currentHour}h_${rejectLogs[0]?.reason_code || 'unknown'}`
-
-        const response = await fetch('/api/history-logs', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            currentPattern,
-            hoursBack: 24
-          })
-        })
-
-        const data = await response.json()
         
-        if (data.summary && data.matches.length > 0) {
+        if (mockData.summary && mockData.matches.length > 0) {
           setHistoricalMatch({
-            summary: data.summary,
-            matches: data.matches
+            summary: mockData.summary,
+            matches: mockData.matches
           })
         }
       } catch (error) {
