@@ -1,0 +1,13 @@
+name = "adx-mirix"
+type = "javascript"
+
+# Cloudflare Pages configuration
+pages_build_output_dir = "out"
+
+[build]
+command = "npm run build"
+cwd = "./"
+watch_paths = ["app/**/*.tsx", "app/**/*.ts", "next.config.js"]
+
+[env.production]
+name = "adx-mirix-prod"

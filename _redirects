@@ -1,0 +1,8 @@
+# Cloudflare Pages redirect rules for Next.js static export
+# Handle SPA routing - redirect all non-file requests to index.html
+
+# Don't redirect files with extensions
+/*.[a-zA-Z0-9]* 200
+
+# Redirect all other requests to index.html for SPA routing
+/* /index.html 200

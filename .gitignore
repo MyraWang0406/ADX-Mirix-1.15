@@ -8,7 +8,6 @@ node_modules/
 
 # Next.js
 /.next/
-/out/
 
 # Production
 /build
@@ -46,5 +45,3 @@ ENV/
 
 # Logs
 *.log
-
-
